@@ -7,7 +7,7 @@ public class Move : MonoBehaviour
 {
     float moveSpeed = 10f;
     float rotateSpeed = 120f; // ← 回転速度
-    float jumpForce = 10f;
+    float jumpForce = 6f;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -26,10 +26,7 @@ public class Move : MonoBehaviour
         Vector3 move = Quaternion.Euler(0, 0, 0) * transform.forward
         * moveInput.y * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
-    }
 
-    void Update()
-    {
         // W/S：前後移動
         Vector3 forwardMove = Quaternion.Euler(0, 0, 0) * transform.forward * moveInput.y * moveSpeed * Time.deltaTime;
         //ジャンプ
