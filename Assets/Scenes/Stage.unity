@@ -187,10 +187,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 1.4052438
+  m_Height: 13.956971
   m_Direction: 1
-  m_Center: {x: 0, y: -1, z: 0}
+  m_Center: {x: -1.1701076e-14, y: 5.4784846, z: -0.9052435}
 --- !u!54 &177555865
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -217,7 +217,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &177555866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,13 +550,13 @@ PrefabInstance:
       addedObject: {fileID: 290780653}
     - targetCorrespondingSourceObject: {fileID: -3996110647418995180, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2009100914}
-    - targetCorrespondingSourceObject: {fileID: -3996110647418995180, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2009100916}
     - targetCorrespondingSourceObject: {fileID: -3996110647418995180, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2009100915}
+    - targetCorrespondingSourceObject: {fileID: -3996110647418995180, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2009100920}
     - targetCorrespondingSourceObject: {fileID: 3654934372253022927, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 292724295}
@@ -1133,28 +1133,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -3996110647418995180, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
   m_PrefabInstance: {fileID: 309923087}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &2009100914
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009100910}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -593053110101353100, guid: d605b466d3098e24fae9876abec59bd4, type: 3}
 --- !u!54 &2009100915
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1195,6 +1173,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   rb: {fileID: 2009100915}
+--- !u!65 &2009100920
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009100910}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.1408828, y: 2.1724803, z: 7.558883}
+  m_Center: {x: -0.0000016571432, y: 0.2855518, z: -3.208997}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,12 +1,10 @@
-
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
     float moveSpeed = 10f;
-    float rotateSpeed = 120f; // ← 回転速度
+    float rotateSpeed = 120f;
     float jumpForce = 6f;
 
     private Vector2 moveInput;
@@ -14,33 +12,23 @@ public class Move : MonoBehaviour
     private bool isGrounded = true;
     private Animator animator;
 
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>(); // ← ここで取得
-
+        animator = GetComponent<Animator>();
     }
+
     void FixedUpdate()
     {
-        Vector3 move = Quaternion.Euler(0, 0, 0) * transform.forward
-        * moveInput.y * moveSpeed * Time.fixedDeltaTime;
+        // 前後移動（Rigidbodyで統一）
+        Vector3 move = transform.forward * moveInput.y * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
 
-        // W/S：前後移動
-        Vector3 forwardMove = Quaternion.Euler(0, 0, 0) * transform.forward * moveInput.y * moveSpeed * Time.deltaTime;
-        //ジャンプ
-        transform.Translate(forwardMove, Space.World);
-
-        // A/D：左右回転
-        float rotation = moveInput.x * rotateSpeed * Time.deltaTime;
-        transform.Rotate(0, rotation, 0);
+        // 左右回転（Rigidbodyで回転させる）
+        float rotation = moveInput.x * rotateSpeed * Time.fixedDeltaTime;
+        rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotation, 0));
 
         animator.SetFloat("Speed", Mathf.Abs(moveInput.y) * 2f);
-
-
-
-
     }
 
     public void OnMove(InputValue value)
@@ -54,16 +42,11 @@ public class Move : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
-
-
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // 地面に触れたらジャンプ可能に
         isGrounded = true;
     }
-
 }
-
