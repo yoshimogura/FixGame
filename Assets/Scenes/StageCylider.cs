@@ -4,7 +4,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Rigidbody rb;
-    float speed = 80f;
+    float speed = 40f;
 
     void FixedUpdate()
     {
