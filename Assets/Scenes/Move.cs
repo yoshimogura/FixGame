@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Move : MonoBehaviour
 {
-    float moveSpeed = 10f;
+    float moveSpeed = 7f;
     float rotateSpeed = 120f;
     float jumpForce = 6f;
 
