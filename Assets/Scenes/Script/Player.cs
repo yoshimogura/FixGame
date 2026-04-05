@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
         float rotation = moveInput.x * rotateSpeed * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotation, 0));
         animator.SetFloat("Speed", Mathf.Abs(moveInput.y) * 2f);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        return;
+
 
     }
 

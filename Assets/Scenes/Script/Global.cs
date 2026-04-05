@@ -16,7 +16,7 @@ public class Global : MonoBehaviour
     void Update()
     {
 
-        PlayerHP = GameObject.Find("プレイヤー").GetComponent<Player>();
+        PlayerHP = GameObject.Find("Player").GetComponent<Player>();
         HPText.text =PlayerHP.hp.ToString("F1"); 
 
         
