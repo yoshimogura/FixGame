@@ -65,7 +65,7 @@ public class 敵 : MonoBehaviour
 
     void Attack()
     {
-        Debug.Log("攻撃した");
+        //Debug.Log("攻撃した");
         PlayerHP = GameObject.Find("Player").GetComponent<Player>();
         PlayerHP.hp -= 10;
     }

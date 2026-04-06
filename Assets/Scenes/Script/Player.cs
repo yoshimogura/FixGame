@@ -13,11 +13,12 @@ public class Player : MonoBehaviour
     private Animator animator;
     public int hp =100;
     public GameObject hitBox;
-
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        hitBox.SetActive(false);
     }
 
     void FixedUpdate()
