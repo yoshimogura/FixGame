@@ -2,41 +2,55 @@ using UnityEngine;
 
 public class 敵 : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Transform player;
-    float chaseRange =12f;//追跡開始の距離
-    float speed=2f;
-    float AtackRange=1f;
-    private float timer;
-    public float attackCooldown = 1f; // 攻撃の間隔
-    private Animator animator;
-    public Player PlayerHP;
+    float chaseRange = 10f;
+    float speed = 2f;
+    float attackRange = 1f;
 
+    private float timer;
+    public float attackCooldown = 1f;
+
+    private Animator animator;
+    Player PlayerHP;
+
+    private bool isChasing = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
     }
-    // Update is called once per frame
+
     void Update()
     {
-        //距離図ってる↓
-        float distance = Vector2.Distance(transform.position, player.position);
-        
-        if (distance < chaseRange && distance > AtackRange)
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        // 追跡開始
+        if (!isChasing && distance < chaseRange)
+        {
+            isChasing = true;
+        }
+        // 追跡終了
+        else if (isChasing && distance > chaseRange + 1f)
+        {
+            isChasing = false;
+        }
+
+        if (isChasing && distance > attackRange)
         {
             Vector3 target = new Vector3(player.position.x, transform.position.y, player.position.z);
             Vector3 direction = (target - transform.position).normalized;
+
             transform.position += direction * speed * Time.deltaTime;
             transform.LookAt(target);
-            animator.Play("Scene");
 
+            animator.Play("Scene");
         }
-        if (distance <= AtackRange)
+
+        // 攻撃処理
+        if (distance <= attackRange)
         {
             timer += Time.deltaTime;
 
-            // 攻撃距離に入った瞬間に即攻撃
             if (timer >= attackCooldown)
             {
                 Attack();
@@ -45,15 +59,14 @@ public class 敵 : MonoBehaviour
         }
         else
         {
-            // 距離から離れたら timer をリセット
             timer = attackCooldown;
         }
-
     }
-    void Attack(){
-            Debug.Log("攻撃した");
-            PlayerHP = GameObject.Find("プレイヤー").GetComponent<Player>();
-            PlayerHP.hp -= 10;
 
-        }
+    void Attack()
+    {
+        Debug.Log("攻撃した");
+        PlayerHP = GameObject.Find("Player").GetComponent<Player>();
+        PlayerHP.hp -= 10;
     }
+}

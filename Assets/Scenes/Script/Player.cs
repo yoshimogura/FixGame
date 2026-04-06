@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private bool isGrounded = true;
     private Animator animator;
     public int hp =100;
+    public GameObject hitBox;
 
     void Start()
     {
@@ -21,7 +22,6 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(hp);
         // 前後移動（Rigidbodyで統一）
         Vector3 move = transform.forward * moveInput.y * moveSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
@@ -63,4 +63,16 @@ public class Player : MonoBehaviour
     {
         isGrounded = true;
     }
+    public void EnableHitBox()
+    {
+        hitBox.SetActive(true);
+        Invoke("DisableHitBox", 0.1f); // 0.1秒だけ当たり判定ON
+    }
+
+    void DisableHitBox()
+    {
+        hitBox.SetActive(false);
+    }
+
+
 }
