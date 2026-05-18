@@ -20,9 +20,6 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         hitBox.SetActive(false);
-
-        // AddForce移動の場合、摩擦で止まらなくなるのを防ぐために
-        // Drag（空気抵抗）をインスペクターで 2〜5 くらいに設定すると動かしやすくなります。
     }
 
     void FixedUpdate()
@@ -31,7 +28,6 @@ public class Player : MonoBehaviour
         // キャラクターの正面方向に対して力を加える
         Vector3 moveDirection = transform.forward * moveInput.y;
         
-        // 瞬間的な力を加える（moveSpeedは小さめの値から調整してください）
         rb.AddForce(moveDirection * moveSpeed, ForceMode.Impulse);
 
         // --- 回転処理 ---
