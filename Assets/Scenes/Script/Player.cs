@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    float moveSpeed = 6f;
+    [SerializeField] float moveSpeed = 0.2f; 
     float rotateSpeed = 120f;
     float jumpForce = 6f;
 
@@ -11,30 +11,41 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private bool isGrounded = true;
     private Animator animator;
-    public int hp =100;
+    public int hp = 100;
     public GameObject hitBox;
-    
+    int maxVelocity=12;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         hitBox.SetActive(false);
+
+        // AddForce移動の場合、摩擦で止まらなくなるのを防ぐために
+        // Drag（空気抵抗）をインスペクターで 2〜5 くらいに設定すると動かしやすくなります。
     }
 
     void FixedUpdate()
     {
-        // 前後移動（Rigidbodyで統一）
-        Vector3 move = transform.forward * moveInput.y * moveSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + move);
+        // --- 移動処理 (AddForce + Impulse) ---
+        // キャラクターの正面方向に対して力を加える
+        Vector3 moveDirection = transform.forward * moveInput.y;
+        
+        // 瞬間的な力を加える（moveSpeedは小さめの値から調整してください）
+        rb.AddForce(moveDirection * moveSpeed, ForceMode.Impulse);
 
-        // 左右回転（Rigidbodyで回転させる）
+        // --- 回転処理 ---
         float rotation = moveInput.x * rotateSpeed * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotation, 0));
+
+        // アニメーション設定
         animator.SetFloat("Speed", Mathf.Abs(moveInput.y) * 2f);
+
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        return;
-
-
+            return;
+        if (rb.linearVelocity.magnitude > maxVelocity) {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxVelocity;
+        }
     }
 
     public void OnMove(InputValue value)
@@ -50,6 +61,7 @@ public class Player : MonoBehaviour
             isGrounded = false;
         }
     }
+
     public void OnAttack(InputValue value)
     {
         if (value.isPressed)
@@ -59,21 +71,20 @@ public class Player : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
+        // 地面判定（簡易的）
         isGrounded = true;
     }
+
     public void EnableHitBox()
     {
         hitBox.SetActive(true);
-        Invoke("DisableHitBox", 0.1f); // 0.1秒だけ当たり判定ON
+        Invoke("DisableHitBox", 0.1f);
     }
 
     void DisableHitBox()
     {
         hitBox.SetActive(false);
     }
-
-
 }
