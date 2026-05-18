@@ -1,4 +1,7 @@
 ﻿<Solution>
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Unity.Robotics.Vhacd.Runtime.Tests.csproj" />
+  <Project Path="Unity.Robotics.Vhacd.Editor.Tests.csproj" />
+  <Project Path="vhacd.csproj" />
 </Solution>
