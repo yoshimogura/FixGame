@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 0.2f; 
+    [SerializeField] float moveSpeed = 0.05f; 
     float rotateSpeed = 120f;
-    float jumpForce = 6f;
+    float jumpForce = 12f;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -42,8 +42,9 @@ public class Player : MonoBehaviour
         if (rb.linearVelocity.magnitude > maxVelocity) {
             rb.linearVelocity = rb.linearVelocity.normalized * maxVelocity;
         }
+        
     }
-
+    
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -71,6 +72,10 @@ public class Player : MonoBehaviour
     {
         // 地面判定（簡易的）
         isGrounded = true;
+        if (collision.gameObject.CompareTag("GateHitJudgment"))
+        {
+            Debug.Log("ゲートきた");
+        }
     }
 
     public void EnableHitBox()
@@ -83,4 +88,5 @@ public class Player : MonoBehaviour
     {
         hitBox.SetActive(false);
     }
+    
 }
