@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 0.05f; 
+    [SerializeField] float moveSpeed = 20f; 
     float rotateSpeed = 120f;
-    float jumpForce = 12f;
+    float jumpForce = 1f;
 
     private Vector2 moveInput;
     private Rigidbody rb;
@@ -24,11 +24,18 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        // --- 移動処理 (AddForce + Impulse) ---
-        // キャラクターの正面方向に対して力を加える
         Vector3 moveDirection = transform.forward * moveInput.y;
-        
-        rb.AddForce(moveDirection * moveSpeed, ForceMode.Impulse);
+
+        if (isGrounded)
+        {
+            // 【地上】キビキビ動かしたいので VelocityChange のまま
+            Vector3 targetVelocity = moveDirection * moveSpeed;
+            rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
+        }
+        else
+        {
+            rb.AddForce(moveDirection * moveSpeed * 0.3f, ForceMode.Force);
+        }
 
         // --- 回転処理 ---
         float rotation = moveInput.x * rotateSpeed * Time.fixedDeltaTime;
@@ -39,10 +46,15 @@ public class Player : MonoBehaviour
 
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             return;
-        if (rb.linearVelocity.magnitude > maxVelocity) {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxVelocity;
+
+        // --- 最高速度の制限（水平方向のみ） ---
+        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        if (horizontalVelocity.magnitude > maxVelocity) 
+        {
+            Vector3 limitedHorizontalVelocity = horizontalVelocity.normalized * maxVelocity;
+            rb.linearVelocity = new Vector3(limitedHorizontalVelocity.x, rb.linearVelocity.y, limitedHorizontalVelocity.z);
         }
-        
+            
     }
     
     public void OnMove(InputValue value)
