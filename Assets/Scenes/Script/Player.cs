@@ -82,12 +82,20 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        string targetTag = collision.gameObject.tag;
+
+        if (collision.gameObject.CompareTag("Battery"))
+        {
+            Debug.Log("鍵ゲット");
+            Destroy(collision.gameObject);
+        }
         // 地面判定（簡易的）
         isGrounded = true;
         if (collision.gameObject.CompareTag("GateHitJudgment"))
         {
             Debug.Log("ゲートきた");
         }
+        
     }
 
     public void EnableHitBox()
