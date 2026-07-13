@@ -529,6 +529,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.44
       objectReference: {fileID: 0}
+    - target: {fileID: 3569580364771318841, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3654934372253022927, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -539,7 +543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4617076111800580061, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8
+      value: 0.805
       objectReference: {fileID: 0}
     - target: {fileID: 5607882617565004768, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_Convex
@@ -549,6 +553,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 13400000, guid: 2198558b7ebe01e4999dccfa3d11ee54, type: 2}
+    - target: {fileID: 5736140035841468752, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5809148510916322126, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -572,6 +580,10 @@ PrefabInstance:
     - target: {fileID: 7787807632201220955, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8078820511171443144, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.27
       objectReference: {fileID: 0}
     - target: {fileID: 8090074987814815327, guid: 922c54e9f14a42240ba563ccaf9ef17f, type: 3}
       propertyPath: m_Material
@@ -1205,7 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36897546f7181064284ffd146eca4244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  moveSpeed: 20
+  moveSpeed: 15
   groundCheckDistance: 0.3
   groundMask:
     serializedVersion: 2

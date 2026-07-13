@@ -33,14 +33,14 @@ public class Player : MonoBehaviour
         hitBox.SetActive(false);
     }
 
-    void FixedUpdate()
+void FixedUpdate()
     {
         // レイキャストによる接地判定と法線の取得（スロープ対策）
         isGrounded = CheckGround();
 
         Vector3 moveDirection = transform.forward * moveInput.y;
 
-        //  移動処理
+        // --- 移動処理 ---
         if (isGrounded)
         {
             // 1. 入力から、地面に対して「水平」な方向（X, Z）を計算
@@ -60,6 +60,14 @@ public class Player : MonoBehaviour
             Vector3 targetVelocity = slopeDir * (moveSpeed / slopeModifier) * moveInput.y;
             rb.linearVelocity = targetVelocity;
         }
+        else
+        {
+            // 空中での進みたい方向（水平方向）を計算
+            Vector3 airMoveDir = transform.forward * moveInput.y;
+
+            rb.AddForce(airMoveDir * moveSpeed * 0.1f, ForceMode.Force);
+        }
+
         // --- 回転処理 ---
         float rotation = moveInput.x * rotateSpeed * Time.fixedDeltaTime;
         rb.MoveRotation(rb.rotation * Quaternion.Euler(0, rotation, 0));
@@ -67,6 +75,7 @@ public class Player : MonoBehaviour
         // アニメーション設定
         animator.SetFloat("Speed", Mathf.Abs(moveInput.y) * 2f);
 
+        // 攻撃アニメーション中はこれ以降の速度リミッターを通さない
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             return;
 
@@ -85,7 +94,6 @@ public class Player : MonoBehaviour
                 rb.linearVelocity = new Vector3(limitedHorizontalVelocity.x, rb.linearVelocity.y, limitedHorizontalVelocity.z);
             }
         }
-        
     }
     private bool CheckGround()
     {
