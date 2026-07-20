@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     float rotateSpeed = 120f;
     float jumpForce = 1f;
     int maxVelocity = 12;
+    Vector3 StartPosition;
+    Quaternion StartRotate;
 
     [Header("Ground Check Settings")]
     [SerializeField] float groundCheckDistance = 3f;
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         hitBox.SetActive(false);
+        StartPosition= transform.position;
+        StartRotate=transform.rotation;
     }
 
 void FixedUpdate()
@@ -94,6 +98,9 @@ void FixedUpdate()
                 rb.linearVelocity = new Vector3(limitedHorizontalVelocity.x, rb.linearVelocity.y, limitedHorizontalVelocity.z);
             }
         }
+        if(transform.position.y<0){
+            ReSpawn();
+        }
     }
     private bool CheckGround()
     {
@@ -132,7 +139,6 @@ void FixedUpdate()
             isGrounded = false;
         }
     }
-
     public void OnAttack(InputValue value)
     {
         if (value.isPressed)
@@ -141,7 +147,13 @@ void FixedUpdate()
             Debug.Log("攻撃！");
         }
     }
-
+    public void OnRespawn(InputValue value){
+        Debug.Log("リセット押した");
+        if (value.isPressed)
+        {
+            ReSpawn();
+        }
+    }   
     // 物理的な衝突判定（壁、ドア、敵など固いもの）
     private void OnCollisionEnter(Collision collision)
     {
@@ -163,8 +175,13 @@ void FixedUpdate()
             Destroy(other.gameObject);
         }
     }
+     void ReSpawn(){
+        rb.linearVelocity = Vector3.zero;  
+        rb.angularVelocity = Vector3.zero;
+        transform.position=StartPosition;
+        transform.rotation=StartRotate;
+    }
 
-    
     /// 足元からレイを飛ばして接地状態と地面の法線をチェックする
     
 
