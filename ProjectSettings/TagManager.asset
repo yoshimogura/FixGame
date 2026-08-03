@@ -8,6 +8,7 @@ TagManager:
   - GateHitJudgment
   - Battery
   - Door
+  - MainCamara
   layers:
   - Default
   - TransparentFX
