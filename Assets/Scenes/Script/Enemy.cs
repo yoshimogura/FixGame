@@ -3,9 +3,9 @@ using UnityEngine;
 public class 敵 : MonoBehaviour
 {
     public Transform player;
-    float chaseRange = 10f;
+    float chaseRange = 8f;
     float speed = 2f;
-    float attackRange = 1f;
+    float attackRange = 0.8f;
 
     private float timer;
     public float attackCooldown = 1f;
@@ -67,6 +67,7 @@ public class 敵 : MonoBehaviour
     {
         //Debug.Log("攻撃した");
         PlayerHP = GameObject.Find("Player").GetComponent<Player>();
+
         PlayerHP.hp -= 10;
     }
 }
