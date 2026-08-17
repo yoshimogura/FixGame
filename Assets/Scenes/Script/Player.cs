@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 9f; 
     float rotateSpeed = 120f;
     float jumpForce = 1f;
-    int maxVelocity = 12;
     Vector3 StartPosition;
     Quaternion StartRotate;
 
