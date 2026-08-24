@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 9f; 
+    [SerializeField] float moveSpeed = 7f; 
     float rotateSpeed = 120f;
     float jumpForce = 1f;
     Vector3 StartPosition;
@@ -140,6 +140,7 @@ void FixedUpdate()
     }
     public void OnAttack(InputValue value)
     {
+        Debug.Log("押した");
         if (value.isPressed)
         {
             animator.SetTrigger("Attack");
@@ -187,7 +188,7 @@ void FixedUpdate()
     public void EnableHitBox()
     {
         hitBox.SetActive(true);
-        Invoke("DisableHitBox", 0.1f);
+        Invoke("DisableHitBox", 0.2f);
     }
 
     void DisableHitBox()

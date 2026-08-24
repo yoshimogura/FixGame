@@ -5,12 +5,12 @@ public class ShotEnemy : MonoBehaviour
     [Header("参照")]
     public Transform player;          // プレイヤーのTransform
     public GameObject bulletPrefab;   // 発射する弾のプレハブ
-    public Transform spawnPoint;      // 弾の出現位置（敵の手元や口など）
+    public Transform spawnPoint;      // 弾の出現位置
 
     [Header("攻撃設定")]
-    public float attackInterval = 2f; // 攻撃のインターバル（秒）
-    public float detectionRange = 15f;// プレイヤーを感知する距離
-    public float playerHeightOffset = 1.0f; // ★プレイヤーの狙う高さのオフセット（1.0でおよそ胸〜頭）
+    public float attackInterval = 3f; // 攻撃のインターバル（秒）
+    public float detectionRange = 11f;// プレイヤーを感知する距離
+    public float playerHeightOffset = 1.0f; // ★プレイヤーの狙う高さのオフセット
 
     private float timer = 0f;
 

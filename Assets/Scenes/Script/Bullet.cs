@@ -4,6 +4,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 8f;    
     public float lifeTime = 4f;   
+    Player Player;
 
     void Start()
     {
@@ -18,7 +19,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ground")|| other.CompareTag("Ground"))
-        {
+        { 
             Destroy(gameObject);
         }
     }
@@ -26,6 +27,9 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            Player = GameObject.Find("Player").GetComponent<Player>();
+            Debug.Log("命中");
+            Player.hp-=10;
             Destroy(gameObject);
         }
     }

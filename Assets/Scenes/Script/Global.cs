@@ -15,10 +15,7 @@ public class Global : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         PlayerHP = GameObject.Find("Player").GetComponent<Player>();
-        HPText.text =PlayerHP.hp.ToString("F1"); 
-
-        
+        HPText.text = $"HP:{(int)PlayerHP.hp}";
     }
 }

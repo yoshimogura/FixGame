@@ -8,8 +8,7 @@ public class 敵 : MonoBehaviour
     float attackRange = 0.8f;
 
     private float timer;
-    public float attackCooldown = 1f;
-
+    public float attackCooldown = 3f;
     private Animator animator;
     Player PlayerHP;
 
@@ -68,6 +67,7 @@ public class 敵 : MonoBehaviour
         //Debug.Log("攻撃した");
         PlayerHP = GameObject.Find("Player").GetComponent<Player>();
 
-        PlayerHP.hp -= 10;
+        PlayerHP.hp -= 5;
+        
     }
 }
