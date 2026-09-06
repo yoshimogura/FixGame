@@ -30,6 +30,7 @@ public class Bullet : MonoBehaviour
             Player = GameObject.Find("Player").GetComponent<Player>();
             Debug.Log("命中");
             Player.hp-=10;
+            Debug.Log(Player.hp);
             Destroy(gameObject);
         }
     }

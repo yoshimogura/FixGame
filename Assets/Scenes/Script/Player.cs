@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("Movement Settings")]
-    [SerializeField] float moveSpeed = 7f; 
+    [SerializeField] float moveSpeed = 5f; 
     float rotateSpeed = 120f;
-    float jumpForce = 1f;
+    float jumpForce = 7f;
     Vector3 StartPosition;
     Quaternion StartRotate;
 
@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     Vector3 groundNormal = Vector3.up;
     private bool isGrounded = true;
-    [SerializeField] float airMaxVelocity = 10f;
+    [SerializeField] float airMaxVelocity = 15f;
+
     [Header("Player Status")]
     public int hp = 100;
     bool key = false;
@@ -25,18 +26,17 @@ public class Player : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody rb;
     private Animator animator;
-    
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         hitBox.SetActive(false);
-        StartPosition= transform.position;
-        StartRotate=transform.rotation;
+        StartPosition = transform.position;
+        StartRotate = transform.rotation;
     }
 
-void FixedUpdate()
+    void FixedUpdate()
     {
         // レイキャストによる接地判定と法線の取得（スロープ対策）
         isGrounded = CheckGround();
@@ -61,6 +61,13 @@ void FixedUpdate()
 
             // 5. 完全に補正された速度を計算して適用
             Vector3 targetVelocity = slopeDir * (moveSpeed / slopeModifier) * moveInput.y;
+
+            // ★修正1：ジャンプ直後（Y軸の上昇速度があるとき）はY速度を維持する
+            if (rb.linearVelocity.y > 0.1f)
+            {
+                targetVelocity.y = rb.linearVelocity.y;
+            }
+
             rb.linearVelocity = targetVelocity;
         }
         else
@@ -68,7 +75,7 @@ void FixedUpdate()
             // 空中での進みたい方向（水平方向）を計算
             Vector3 airMoveDir = transform.forward * moveInput.y;
 
-            rb.AddForce(airMoveDir * moveSpeed * 0.1f, ForceMode.Force);
+            rb.AddForce(airMoveDir * moveSpeed * 0.5f, ForceMode.Force);
         }
 
         // --- 回転処理 ---
@@ -97,34 +104,40 @@ void FixedUpdate()
                 rb.linearVelocity = new Vector3(limitedHorizontalVelocity.x, rb.linearVelocity.y, limitedHorizontalVelocity.z);
             }
         }
-        if(transform.position.y<0){
+
+        if (transform.position.y < 0)
+        {
             ReSpawn();
         }
     }
+
     private bool CheckGround()
+{
+    // 胴体の中心（高めの位置）から飛ばす
+    Vector3 origin = transform.position + Vector3.up * 1.1f;
+    RaycastHit hit;
+    
+    // 坂道での接地外れを防ぐため、少し長め（1.4f）に設定
+    float maxDistance = 1.4f; 
+
+    if (Physics.Raycast(origin, Vector3.down, out hit, maxDistance, groundMask))
     {
-        // 出発地点を「足元」ではなく、キャラクターの「お腹の高さ（上方に0.5m）」に変更
-        Vector3 origin = transform.position + Vector3.up * 0.8f;
-        RaycastHit hit;
-
-        // レイを飛ばす際、自分自身のオブジェクト(gameObject)を無視する設定を追加
-        // ※光線の長さは、高くなった分（0.5m）を考慮して、少し長めに設定します
-        float maxDistance = groundCheckDistance + 0.8f;
-
-        // レイキャストを実行（groundMaskの設定が正しければこれで確実に床を検知します）
-        if (Physics.Raycast(origin, Vector3.down, out hit, maxDistance, groundMask))
+        if (hit.collider.gameObject != this.gameObject)
         {
-            // 念のため、当たった相手が自分自身（Player）じゃない場合のみ地面とする
-            if (hit.collider.gameObject != this.gameObject)
+            // 壁ではなく「坂道」と判定できる角度（50度以内）かチェック
+            float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+            if (slopeAngle <= 50f)
             {
                 groundNormal = hit.normal;
                 return true;
             }
         }
-
-        groundNormal = Vector3.up;
-        return false;
     }
+
+    groundNormal = Vector3.up;
+    return false;
+}
+
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -134,10 +147,19 @@ void FixedUpdate()
     {
         if (isGrounded)
         {
+            // ★修正2：ジャンプした瞬間に水平方向の速度が airMaxVelocity を超えていたら抑える
+            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            if (horizontalVelocity.magnitude > airMaxVelocity)
+            {
+                Vector3 limitedHorizontal = horizontalVelocity.normalized * airMaxVelocity;
+                rb.linearVelocity = new Vector3(limitedHorizontal.x, rb.linearVelocity.y, limitedHorizontal.z);
+            }
+
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }
     }
+
     public void OnAttack(InputValue value)
     {
         Debug.Log("押した");
@@ -147,13 +169,16 @@ void FixedUpdate()
             Debug.Log("攻撃！");
         }
     }
-    public void OnRespawn(InputValue value){
+
+    public void OnRespawn(InputValue value)
+    {
         Debug.Log("リセット押した");
         if (value.isPressed)
         {
             ReSpawn();
         }
     }   
+
     // 物理的な衝突判定（壁、ドア、敵など固いもの）
     private void OnCollisionEnter(Collision collision)
     {
@@ -175,15 +200,14 @@ void FixedUpdate()
             Destroy(other.gameObject);
         }
     }
-     void ReSpawn(){
-        rb.linearVelocity = Vector3.zero;  
-        rb.angularVelocity = Vector3.zero;
-        transform.position=StartPosition;
-        transform.rotation=StartRotate;
-    }
 
-    /// 足元からレイを飛ばして接地状態と地面の法線をチェックする
-    
+    void ReSpawn()
+    {
+        rb.linearVelocity = Vector3.zero;   
+        rb.angularVelocity = Vector3.zero;
+        transform.position = StartPosition;
+        transform.rotation = StartRotate;
+    }
 
     public void EnableHitBox()
     {

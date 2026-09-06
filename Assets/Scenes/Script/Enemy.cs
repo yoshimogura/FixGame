@@ -42,7 +42,7 @@ public class 敵 : MonoBehaviour
             transform.position += direction * speed * Time.deltaTime;
             transform.LookAt(target);
 
-            animator.Play("Scene");
+            // animator.Play("Scene");
         }
 
         // 攻撃処理
