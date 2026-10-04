@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
     private bool CheckGround()
 {
     // 胴体の中心（高めの位置）から飛ばす
-    Vector3 origin = transform.position + Vector3.up * 1.15f;
+    Vector3 origin = transform.position + Vector3.up * 1.25f;
     RaycastHit hit;
     
     // 坂道での接地外れを防ぐため、少し長め（1.4f）に設定
