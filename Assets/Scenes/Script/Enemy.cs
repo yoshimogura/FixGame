@@ -34,6 +34,10 @@ public class 敵 : MonoBehaviour
             isChasing = false;
         }
 
+        // 移動判定い
+        bool isMoving = false;
+
+        // 追跡中かつ攻撃範囲外なら移動
         if (isChasing && distance > attackRange)
         {
             Vector3 target = new Vector3(player.position.x, transform.position.y, player.position.z);
@@ -42,7 +46,13 @@ public class 敵 : MonoBehaviour
             transform.position += direction * speed * Time.deltaTime;
             transform.LookAt(target);
 
-            // animator.Play("Scene");
+            isMoving = true; 
+        }
+
+        // AnimatorのBoolパラメータを更新
+        if (animator != null)
+        {
+            animator.SetBool("isWalking", isMoving);
         }
 
         // 攻撃処理
@@ -67,7 +77,9 @@ public class 敵 : MonoBehaviour
         //Debug.Log("攻撃した");
         PlayerHP = GameObject.Find("Player").GetComponent<Player>();
 
-        PlayerHP.hp -= 5;
-        
+        if (PlayerHP != null)
+        {
+            PlayerHP.hp -= 5;
+        }
     }
 }

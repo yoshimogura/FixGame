@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
     private bool CheckGround()
 {
     // 胴体の中心（高めの位置）から飛ばす
-    Vector3 origin = transform.position + Vector3.up * 1.1f;
+    Vector3 origin = transform.position + Vector3.up * 1.15f;
     RaycastHit hit;
     
     // 坂道での接地外れを防ぐため、少し長め（1.4f）に設定
@@ -165,6 +165,7 @@ public class Player : MonoBehaviour
         Debug.Log("押した");
         if (value.isPressed)
         {
+            EnableHitBox();
             animator.SetTrigger("Attack");
             Debug.Log("攻撃！");
         }
@@ -211,6 +212,7 @@ public class Player : MonoBehaviour
 
     public void EnableHitBox()
     {
+    Debug.Log("攻撃押したHitBox検証");
         hitBox.SetActive(true);
         Invoke("DisableHitBox", 0.2f);
     }
